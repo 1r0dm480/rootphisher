@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <string.h>
 
-
 /** MAIN CODE **/
 
 int main () {
