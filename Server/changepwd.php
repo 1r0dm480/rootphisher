@@ -2,7 +2,7 @@
 
 session_start();
 
-include('db.inc.php');
+include('db.inc.php'); # contains DB connection data
 
 $sess = $_SESSION['username'];
 
