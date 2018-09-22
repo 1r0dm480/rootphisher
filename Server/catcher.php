@@ -1,5 +1,5 @@
 <?php
-/* This php  */
+
 include('db.inc.php'); # contains DB connection data
 
 $ip = $_SERVER['REMOTE_ADDR']; # saves ip
